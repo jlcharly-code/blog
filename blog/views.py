@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+def index(request):
+    # Cette fonction renvoie le template 'index.html'
+    return render(request, 'index.html')

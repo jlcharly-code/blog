@@ -11,6 +11,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     last_updated = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         ordering = ['-created_on']
