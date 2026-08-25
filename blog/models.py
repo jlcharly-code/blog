@@ -1,32 +1,28 @@
-from django.conf import settings
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 from django.utils import timezone
 
+User = get_user_model()
 
-class Post(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class BlogPost(models.Model):
     title = models.CharField(max_length=255, unique=True, verbose_name="Titre")
-    text = models.TextField(blank=True, verbose_name="Contenu")
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    created_date = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
-    published_date = models.DateTimeField(blank=True, null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    
+    created_on = models.DateField(default=timezone.localdate)
+    published = models.BooleanField(default=False, verbose_name="Publié")
+    content = models.TextField(blank=True, verbose_name="Contenu")
+
     class Meta:
         ordering = ['-created_on']
         verbose_name = "Article"
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
     def __str__(self):
         return self.title
-        
-    def save(self, *args, **kwargs):
-		   if not self.slug:
-                    self.slug = slugify(self.title)
 
-                    super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 

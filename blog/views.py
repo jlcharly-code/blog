@@ -1,5 +1,12 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+from .models import BlogPost
 
-def index(request):
-    # Cette fonction renvoie le template 'index.html'
-    return render(request, 'index.html')
+class BlogHome(ListView):
+    model = BlogPost
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            return queryset
+        return queryset.filter(published=True)
