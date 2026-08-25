@@ -4,11 +4,68 @@
     <title>Accueil du blog</title>
 {% endblock %}
 
-{% block content %}  <!-- <--- Le style doit être ICI -->
+{% block content %}
 <style>
+    /* Layout principal : Flexbox pour mettre la sidebar à gauche et les articles à droite */
+    .blog-container {
+        display: flex;
+        flex-wrap: wrap; /* Pour que ça s'adapte sur mobile */
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Colonne de gauche : Sidebar */
+    .sidebar {
+        flex: 1; /* Prend environ 1/4 de l'espace */
+        min-width: 250px;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        height: fit-content; /* S'adapte au contenu */
+    }
+
+    .sidebar h3 {
+        margin-top: 0;
+        color: #2c3e50;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #34495e;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .sidebar a:hover {
+        color: #3498db;
+        text-decoration: underline;
+    }
+
+    /* Colonne de droite : Articles */
+    .main-content {
+        flex: 3; /* Prend environ 3/4 de l'espace */
+        min-width: 300px;
+    }
+
+    /* Styles existants pour l'en-tête */
     .blog-header {
         text-align: center;
         margin: 40px 0;
+        width: 100%; /* S'assure que l'en-tête prend toute la largeur avant le flex */
     }
     
     .blog-header img {
@@ -28,13 +85,30 @@
         margin: 0;
     }
     
+    /* Styles des articles */
     article {
-        max-width: 800px;
-        margin: 20px auto;
+        max-width: 100%; /* S'adapte à la colonne */
+        margin-bottom: 30px;
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    article h2 {
+        margin-top: 0;
+        color: #2c3e50;
+    }
+
+    /* Mobile : empilement vertical */
+    @media (max-width: 768px) {
+        .blog-container {
+            flex-direction: column;
+        }
+        .sidebar, .main-content {
+            min-width: 100%;
+        }
     }
 </style>
 
@@ -43,12 +117,36 @@
     <h1>Le blog littéraire</h1>
 </div>
 
-{% for post in posts %}
-    <article>
-        <h2>{{ post.title }}</h2>
-        <h5>Publié le {{ post.created_on|date:'j F Y' }}</h5>
-        <p>{{ post.content|safe|truncatewords:50 }}</p>
-    </article>
-{% endfor %}
+<div class="blog-container">
+    <!-- Colonne de gauche : Liste des Slugs -->
+    <aside class="sidebar">
+        <h3>Articles récents</h3>
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <!-- Assure-toi que ton modèle a un champ 'slug' et que l'URL est configurée -->
+                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                </li>
+            {% empty %}
+                <li>Aucun article pour le moment.</li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Colonne de droite : Liste complète des articles -->
+    <main class="main-content">
+        {% for post in posts %}
+            <article>
+                <h2>{{ post.title }}</h2>
+                <h5>Publié le {{ post.created_on|date:'j F Y' }}</h5>
+                <p>{{ post.content|safe|truncatewords:50 }}</p>
+                <!-- Lien vers l'article complet -->
+                <a href="{% url 'post_detail' post.slug %}" style="color: #3498db; font-weight: bold;">Lire la suite &rarr;</a>
+            </article>
+        {% empty %}
+            <p>Aucun article à afficher.</p>
+        {% endfor %}
+    </main>
+</div>
 
 {% endblock %}
