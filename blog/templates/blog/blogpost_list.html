@@ -4,7 +4,6 @@
     <title>Accueil du blog</title>
 {% endblock %}
 
-{% block content %}
 <style>
     .blog-header {
         text-align: center;
@@ -13,10 +12,12 @@
     
     .blog-header img {
         max-width: 100%;
+        max-height: 350px; /* Ajuste ce chiffre (350px) pour la taille désirée */
         height: auto;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 20px;
+        object-fit: cover; /* Coupe l'image proprement si elle est trop haute */
     }
     
     .blog-header h1 {
@@ -26,7 +27,6 @@
         margin: 0;
     }
     
-    /* Ajout de style pour les articles */
     article {
         max-width: 800px;
         margin: 20px auto;
