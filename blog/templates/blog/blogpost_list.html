@@ -4,6 +4,7 @@
     <title>Accueil du blog</title>
 {% endblock %}
 
+{% block content %}  <!-- <--- Le style doit être ICI -->
 <style>
     .blog-header {
         text-align: center;
@@ -12,12 +13,12 @@
     
     .blog-header img {
         max-width: 100%;
-        max-height: 350px; /* Ajuste ce chiffre (350px) pour la taille désirée */
+        max-height: 350px;
         height: auto;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 20px;
-        object-fit: cover; /* Coupe l'image proprement si elle est trop haute */
+        object-fit: cover;
     }
     
     .blog-header h1 {
@@ -42,7 +43,6 @@
     <h1>Le blog littéraire</h1>
 </div>
 
-<!-- La boucle FOR est maintenant À L'INTÉRIEUR du bloc content -->
 {% for post in posts %}
     <article>
         <h2>{{ post.title }}</h2>
@@ -51,5 +51,4 @@
     </article>
 {% endfor %}
 
-<!-- Un seul endblock à la fin -->
 {% endblock %}
