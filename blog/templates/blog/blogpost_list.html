@@ -125,7 +125,7 @@
             {% for post in posts %}
                 <li>
                     <!-- Assure-toi que ton modèle a un champ 'slug' et que l'URL est configurée -->
-                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                    <a href="{% url 'blog:post_detail' post.slug %}">{{ post.title }}</a>
                 </li>
             {% empty %}
                 <li>Aucun article pour le moment.</li>
@@ -141,7 +141,7 @@
                 <h5>Publié le {{ post.created_on|date:'j F Y' }}</h5>
                 <p>{{ post.content|safe|truncatewords:50 }}</p>
                 <!-- Lien vers l'article complet -->
-                <a href="{% url 'post_detail' post.slug %}" style="color: #3498db; font-weight: bold;">Lire la suite &rarr;</a>
+                <a href=href="{% url 'blog:post_detail' post.slug %}"  style="color: #3498db; font-weight: bold;">Lire la suite &rarr;</a>
             </article>
         {% empty %}
             <p>Aucun article à afficher.</p>

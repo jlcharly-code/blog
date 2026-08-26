@@ -14,6 +14,6 @@ class BlogHome(ListView):
 class PostDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/post_detail.html'  # Le nom du fichier HTML pour l'article complet
-    context_object_name = 'posts'
+    context_object_name = 'post'
     # Django utilise automatiquement le slug ou l'ID si tu ne specifies pas de field_name
     # Comme ton URL utilise <slug:slug>, Django le détectera automatiquement.
